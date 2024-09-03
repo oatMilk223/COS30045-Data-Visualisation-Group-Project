@@ -1,0 +1,16 @@
+h1, h2, h3, h4, h5, h6, p {
+    /*google font import with alternative*/
+    font-family: "Inter", sans-serif;
+}
+* {
+    /*removing margin around page*/
+    margin: 0;
+}
+nav {
+    background-color: #754F5B;
+}
+body {
+    /*this might be too yellow lol*/
+    background-color: whitesmoke;
+    /*background-color: #FEFFAE;*/
+}

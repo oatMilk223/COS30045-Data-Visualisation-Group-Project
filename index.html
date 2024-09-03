@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Data Visualisation">
+    <meta name="keywords" content="HTML, CSS, D3, JS">
+    <meta name="author" content="Brooke Johnson and Jacob Coulter">
+    <title>OECD Health Data for Alcohol Consumption and Children Vaccination Rates</title>
+    <script src="./scripts/script.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <link rel="stylesheet" href="./styles/styles.css">
+</head>
+<body>
+<!--Todo:
+    - basic page contents
+        - footer
+        - header
+    - visualisation one -- children vaccination rates
+    - visualisation two -- alcohol consumption
+    - styling of both visualisations - can we use sass?
+    - select components for data -- year select and others
+    - google font import - done
+    - datasets import 1 and 2
+-->
+<div id="page">
+    <nav>
+        <h1>OECD Health Statistics</h1>
+        <p>OECD Health Data for Alcohol Consumption and Children Vaccination Rates</p>
+
+<!--    todo: skew to left    -->
+        <p>By Brooke Johnson (102968951) and Jacob Coulter (105408256)</p>
+    </nav>
+
+<!--    we should consider a flex box to show both visualisations nicely :) flex from section -->
+    <section>
+        <!--CHILD VACCINATION RATES-->
+        <div id="c-v-c-left">
+            <h2>Child Vaccination Rates</h2>
+        <!--todo: get to change on filter -->
+            <p>% of children under 1 year old, 2022</p>
+            <div id="c-v-c-legend">
+
+            </div>
+            <svg id="child-vac-rates-svg"></svg>
+        </div>
+        <div id="c-v-c-right">
+            <p>Filter by:</p>
+            <button>All</button>
+            <button>Measles</button>
+            <button>Diphtheria</button>
+
+            <label for="c-v-c-year">Year:</label>
+            <select name="year" id="c-v-c-year">
+                <!-- placeholder-->
+                <option value="2001">2001</option>
+                <option value="2002">2002</option>
+            </select>
+
+            <label for="c-v-c-countries">Countries Selected</label>
+            <select name="countries" id="c-v-c-countries">
+                <!-- placeholder -- need to get all and allow multiple -->
+                <option value="Australia">Australia</option>
+                <option value="Belgium">Belgium</option>
+            </select>
+            <p>Description:</p>
+            <!-- ideally not hardcoded -->
+            <p>All OECD countries have established vaccination programmes based on their interpretation of the risks and benefits of each vaccine.</p>
+            <a href="https://www.oecd.org/en/data/indicators/child-vaccination-rates.html" target="_blank">Link to Original Indicator</a>
+        </div>
+
+
+        <!--ALCOHOL CONSUMPTION-->
+        <div id="a-c-left">
+            <h2>Alcohol Consumption</h2>
+            <p>Litres/capita (aged 15 and over)</p>
+            <svg id="alc-cons-svg"></svg>
+        </div>
+        <div id="a-c-right">
+            <p>Filter by:</p>
+
+            <label for="a-c-year">Year:</label>
+            <select name="year" id="a-c-year">
+                <!-- placeholder-->
+                <option value="2001">2001</option>
+                <option value="2002">2002</option>
+            </select>
+
+            <label for="a-c-countries">Countries Selected</label>
+            <select name="countries" id="a-c-countries">
+                <!-- placeholder -- need to get all and allow multiple -->
+                <option value="Australia">Australia</option>
+                <option value="Belgium">Belgium</option>
+            </select>
+
+            <p>Description:</p>
+            <p>Alcohol consumption is defined as annual sales of pure alcohol in litres per person aged 15 years and older.</p>
+            <a href="https://www.oecd.org/en/data/indicators/alcohol-consumption.html" target="_blank">Link to Original Indicator</a>
+        </div>
+    </section>
+    <footer>
+        <p>this is a footer</p>
+    </footer>
+</div>
+</body>
+</html>
