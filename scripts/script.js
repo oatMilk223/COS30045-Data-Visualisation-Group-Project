@@ -80,7 +80,6 @@ function init() {
                     .attr("y2", barY)
                     .attr("id", "line-bar")
                     .style("opacity", 0.5);
-
                 //specify border around x-axis text
                 borderGroup
                     .selectAll('.border')
@@ -122,16 +121,22 @@ function init() {
 
     function generateSvgDataChld(data) {
         //for svg1
-
     }
 
 
-    //TODO: REPLACE WITH SELECTED CSV/JSON FILE - DEPENDANT ON FILTERS
-    //load data for alc-cons-svg
-    // d3.json("../assets/alc-cons-data.json").then(function(json) {
-    //     generateSvgData(data);
-    // });
-    generateSvgDataAlc(sampleData);
+    //todo: work on filters in other branch
+    d3.select("#a-c-year").on("change", function() {
+        console.log(this.value, "changed year for a")
+    });
+    d3.select("#a-c-countries").on("change", function() {
+        console.log(this.value, "changed country for a")
+    });
+
+    //default value used here
+    d3.csv(`../DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
+        generateSvgDataAlc(data)
+    });
+
     generateSvgDataChld(sampleData);
 
 }
