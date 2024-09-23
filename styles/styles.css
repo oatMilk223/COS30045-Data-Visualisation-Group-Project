@@ -1,4 +1,4 @@
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, a, label, option {
     /*google font import with alternative*/
     font-family: "Inter", sans-serif;
 }
@@ -10,7 +10,82 @@ nav {
     background-color: #754F5B;
 }
 body {
-    /*this might be too yellow lol*/
     background-color: whitesmoke;
-    /*background-color: #FEFFAE;*/
+}
+section {
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    div {
+        flex: 0 0 49%;
+    }
+}
+.rect-a:hover {
+    fill: #df65b0;
+    stroke: black;
+    stroke-width: 3px;
+}
+.axis line, .axis path {
+    stroke: black;
+    stroke-width: 6;
+}
+.tick line {
+    stroke: black;
+    stroke-width: 6;
+}
+.highlight {
+    stroke: #df65b0;
+    stroke-width: 6;
+    fill: none;
+}
+.desc-text {
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 50px;
+}
+#a-c-right, #c-v-c-right {
+    padding: 10px;
+}
+a {
+    text-decoration: none;
+    background-color: black;
+    border: 1px solid black;
+    color: antiquewhite;
+    padding: 10px;
+    border-radius: 10px;
+}
+a:hover {
+    color: #df65b0;
+    border: 1px solid #df65b0;
+}
+#c-v-c-left, #c-v-c-right, #a-c-left, #a-c-right {
+    min-height: 40em;
+}
+#a-c-right, #a-c-left {
+    border-top: 5px solid #e0dbdb;
+    padding-top: 20px;
+}
+.y-a-c {
+    label {
+        font-size: large;
+        font-weight: bold;
+    }
+    select {
+        border-radius: 7px;
+        border: 1px solid black;
+        padding: 8px;
+        width: 100%;
+        background-color: #F5F5F5;
+    }
+    select:active, select:hover {
+        background-color: black;
+        color: mintcream;
+    }
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+}
+.y-a-c, .desc-text {
+    max-width: 400px;
 }
