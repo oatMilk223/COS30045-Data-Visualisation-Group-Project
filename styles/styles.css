@@ -26,6 +26,11 @@ section {
     stroke: black;
     stroke-width: 3px;
 }
+.circ-c:hover {
+    fill: #df65b0;
+    stroke: black;
+    stroke-width: 3px;
+}
 .axis line, .axis path {
     stroke: black;
     stroke-width: 6;
