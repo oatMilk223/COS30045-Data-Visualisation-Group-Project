@@ -106,7 +106,7 @@ function init() {
             .domain([1, data.length])
             .range([svgPadding, s_width])
         const scaleY = d3.scaleLinear()
-            .domain([0, 100])
+            .domain([0, 110])
             .range([s_height, 0]);
 
         //Add ticks and adjust sizing
@@ -124,7 +124,7 @@ function init() {
 
 
         //vacc-rate-svg dtp dots
-        let circ1 = svg1.selectAll("rect").data(data).enter()
+        let circ1 = svg1.selectAll("circle").data(data).enter()
             .append("circle")
             .attr("visibility", function(d){if (d.dtp) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
             .attr("class", "circ-c")
@@ -151,7 +151,7 @@ function init() {
             })
         
             //vacc-rate-measles-dots
-        let circ2 = svg1.selectAll("rect").data(data).enter()
+        let circ2 = svg1.selectAll("circle").data(data).enter()
             .append("circle")
             .attr("visibility", function(d){if (d.Measles) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
             .attr("class", "circ-c")
