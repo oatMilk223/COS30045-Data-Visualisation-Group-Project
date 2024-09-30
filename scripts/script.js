@@ -99,11 +99,16 @@ function init() {
             .attr("class", "axis y-axis")
             .attr("transform", `translate(${svgPadding},  0)`).style("font-size", "14px");
     }
+    function generateSvgDataAlc2(data) {
+        //will update alc svg here
+
+    }
+
 
     function generateSvgDataChld(data) {
         //updated x and y for dynamic scaling:
         const scaleX = d3.scaleBand() 
-            .domain(data.map(function(d){console.log(d.Category); return d.Category;}))
+            .domain(data.map(function(d){return d.Category;}))
             .range([svgPadding, s_width])
         const scaleY = d3.scaleLinear()
             .domain([0, 110])
@@ -249,20 +254,108 @@ function init() {
     }
 
 
-    //todo: work on filters in other branch
+    function getSelectedCountries(id) {
+        let selectedCountries = [];
+        const countryOptions = Array.from(getFieldOptions(id))
+        for (let opt in countryOptions) {
+            if (countryOptions[opt].selected === true) {
+                selectedCountries.push(countryOptions[opt].value);
+            }
+        }
+        return selectedCountries;
+    }
+
     d3.select("#a-c-year").on("change", function() {
-        console.log(this.value, "changed year for a")
-    });
-    d3.select("#a-c-countries").on("change", function() {
-        console.log(this.value, "changed country for a")
+        const yearSelected = this.value;
+        if (yearSelected !== "") {
+            //update available country options per year change via csv file options:
+            let countryOptions = [];
+            d3.csv(`../DV_CSVs/Alcohol Consumption/AC_${this.value}.csv`).then(data => {
+                return data.map((d) => d.country);
+            }).then((d) => {
+                countryOptions = [...d];
+                //Change available country options and reset any selected
+                changeAvailAlcCountryOptions(countryOptions);
+            }).then(() => {
+                //Set default country options selected to first couple
+                setAlcCountryOptions();
+            }).then(() => {
+                //Change data visualisation with new selected values / filtered data
+                //get selected country values
+                const selectedCountries = getSelectedCountries("a-c-countries");
+                filterData(selectedCountries, yearSelected).then((data) => {
+                    generateSvgDataAlc2(data)
+                })
+            })
+        }
     });
 
+    function filterData(countries, year) {
+        //get data from csv file which matches year and country filters.
+        //this could be refactored for other visualisations
+        // Apply year filter then further filter data for selected countries:
+        //todo: replace when in mercury
+        //    d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
+        // let sdata = [];
+        return d3.csv(`../DV_CSVs/Alcohol Consumption/AC_${year}.csv`).then(data => {
+            // Apply country filters: only keep data that has the selected countries
+            return data.filter(dp => [...countries].includes(dp.country)); // Return the filtered data
+        });
+    }
+
+    //this could be refactored to work for the other visualisation if needed
+    function changeAvailAlcCountryOptions(countryOptions) {
+        if (countryOptions) {
+            let select = document.querySelector('#a-c-countries');
+            select.innerHTML = '';
+            select.value = '';
+            countryOptions.forEach((opt) => {
+                const newOpt = document.createElement('option');
+                newOpt.text = opt;
+                newOpt.value = opt;
+                select.appendChild(newOpt)
+            })
+        }
+    }
+    function setAlcCountryOptions() {
+        //Get first 5 data items from country options to use
+        let fieldOptions = getFieldOptions("a-c-countries")
+        for (let i=0, l= fieldOptions.length; i<l; i++) {
+            //This will set default selected values for new options. It will use the first couple
+            fieldOptions[i].selected = i < 5;
+        }
+    }
+
+    function getFieldOptions(id) {
+        const field = document.getElementById(id)
+        return field ? field.options : null;
+    }
+
+
+    d3.select("#a-c-countries").on("change", function() {
+        //get selected country values
+        const selectedCountries = getSelectedCountries("a-c-countries");
+        //when options are changed update dv:
+        if (selectedCountries) {
+            //update dv with filtered data
+            //get selected year - will always be one value
+            const selectedYear = document.getElementById("a-c-year").value
+            filterData(selectedCountries, selectedYear).then((data) => {
+                generateSvgDataAlc2(data)
+            })
+        }
+    });
+
+
+
     //default value used here
-    d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
+    //    d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
+    d3.csv(`../DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
         generateSvgDataAlc(data)
     });
 
-    d3.csv('../assign3/DV_CSVs/Child Vaccination/CV_2022.csv').then(function(data){
+    //    d3.csv(`../assign3/DV_CSVs/Child Vaccination/CV_2022.csv`).then(data => {
+    d3.csv('../DV_CSVs/Child Vaccination/CV_2022.csv').then(function(data){
         generateSvgDataChld(data)
     })
 
