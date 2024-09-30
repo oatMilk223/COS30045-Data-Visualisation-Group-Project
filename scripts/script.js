@@ -1,7 +1,7 @@
 function init() {
     const s_width = 700;
     const s_height = 500;
-    const svgPadding = 40;
+    const svgPadding = 80;
 
     //PUT SVGS HERE
     const svg1 = d3.select("#child-vac-rates-svg")
@@ -102,19 +102,27 @@ function init() {
 
     function generateSvgDataChld(data) {
         //updated x and y for dynamic scaling:
-        const scaleX = d3.scaleLinear() //scale linear as non-bar chart graph
-            .domain([1, data.length])
+        const scaleX = d3.scaleBand() 
+            .domain(data.map(function(d){console.log(d.Category); return d.Category;}))
             .range([svgPadding, s_width])
         const scaleY = d3.scaleLinear()
             .domain([0, 110])
             .range([s_height, 0]);
 
         //Add ticks and adjust sizing
-        const xAxis = d3.axisBottom(scaleX).tickSize(15);
+        const xAxis = d3.axisBottom(scaleX).tickSize(0);
         const yAxis = d3.axisLeft(scaleY).ticks(10).tickSize(15);
 
         //Horizontal ine for when a bar is hovered over
-        const hoverLine = svg1.append("line")
+        const hoverLine1 = svg1.append("line")
+            .attr("class", "highlight")
+            .attr("x1", 0)
+            .attr("x2", s_width)
+            .attr("y1", s_height)
+            .attr("y2", s_height)
+            .style("opacity", 0);
+
+        const hoverLine2 = svg1.append("line")
             .attr("class", "highlight")
             .attr("x1", 0)
             .attr("x2", s_width)
@@ -124,64 +132,115 @@ function init() {
 
 
         //vacc-rate-svg dtp dots
-        let circ1 = svg1.selectAll("circle").data(data).enter()
+        let circ1 = svg1.selectAll("circ1").data(data).enter()
             .append("circle")
             .attr("visibility", function(d){if (d.dtp) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
             .attr("class", "circ-c")
             .attr("stroke", "black")
             .attr("stroke-width", "2px")
             .attr("fill", "#9e9ac8")
-            .attr("cx", function(d, i){return (scaleX(i+1));})
+            .attr("cx", function(d){return scaleX(d.Category);})
             .attr("cy", function(d){return scaleY(d.dtp);})
             .attr("r", 3)
             //mouseover effects for line
             .on("mouseover", function(event, d) {
-                const cirY = scaleY(event.dtp);
+                var cirY = scaleY(event.dtp);
+                var opacity = 0;
+                if (event.dtp)
+                    opacity = 0.5;
+                else
+                    opacity = 0;
                 //specify dimensions of horizontal line and make visible
-                hoverLine
+                hoverLine1
                     .attr("x1", svgPadding) // Start position moved left
                     .attr("x2", s_width + svgPadding)
                     .attr("y1", cirY)
                     .attr("y2", cirY)
                     .attr("id", "line-bar")
-                    .style("opacity", 0.5);
+                    .style("opacity", opacity);
+                cirY = scaleY(event.Measles);
+                if (event.Measles)
+                    opacity = 0.5;
+                else
+                    opacity = 0;
+                hoverLine2
+                    .attr("x1", svgPadding) // Start position moved left
+                    .attr("x2", s_width + svgPadding)
+                    .attr("y1", cirY)
+                    .attr("y2", cirY)
+                    .attr("id", "line-bar")
+                    .style("opacity", opacity);
             })
             .on("mouseout", function (event, d) {
-                hoverLine.style("opacity", 0);
-            })
+                hoverLine1.style("opacity", 0)
+                hoverLine2.style("opacity", 0);
+            });
         
             //vacc-rate-measles-dots
-        let circ2 = svg1.selectAll("circle").data(data).enter()
+        let circ2 = svg1.selectAll("circ2").data(data).enter()
             .append("circle")
             .attr("visibility", function(d){if (d.Measles) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
             .attr("class", "circ-c")
             .attr("stroke", "black")
             .attr("stroke-width", "2px")
             .attr("fill", "#e61017")
-            .attr("cx", function(d, i){return (scaleX(i+1));})
+            .attr("cx", function(d, i){return scaleX(d.Category);})
             .attr("cy", function(d){return scaleY(d.Measles);})
             .attr("r", 3)
             //mouseover effects for line
             .on("mouseover", function(event, d) {
-                const cirY = scaleY(event.Measles);
+                var cirY = scaleY(event.dtp);
+                var opacity = 0;
+                if (event.dtp)
+                    opacity = 0.5;
+                else
+                    opacity = 0;
                 //specify dimensions of horizontal line and make visible
-                hoverLine
+                hoverLine1
                     .attr("x1", svgPadding) // Start position moved left
                     .attr("x2", s_width + svgPadding)
                     .attr("y1", cirY)
                     .attr("y2", cirY)
                     .attr("id", "line-bar")
-                    .style("opacity", 0.5);
+                    .style("opacity", opacity);
+                cirY = scaleY(event.Measles);
+                if (event.Measles)
+                    opacity = 0.5;
+                else
+                    opacity = 0;
+                hoverLine2
+                    .attr("x1", svgPadding) // Start position moved left
+                    .attr("x2", s_width + svgPadding)
+                    .attr("y1", cirY)
+                    .attr("y2", cirY)
+                    .attr("id", "line-bar")
+                    .style("opacity", opacity);
             })
             .on("mouseout", function (event, d) {
-                hoverLine.style("opacity", 0);
-            })
+                hoverLine1.style("opacity", 0);
+                hoverLine2.style("opacity", 0);
+            });
+
+        let vertline = svg1.selectAll("vertline").data(data).enter()
+                            .append("line")
+                            .attr("visibility", function(d){if (d.Measles&&d.dtp) return "visibile"; else return "hidden";})
+                            .attr("x1", function(d,i){return scaleX(d.Category);})
+                            .attr("x2", function(d,i){return scaleX(d.Category);})
+                            .attr("y1", function(d){if (d.dtp) return scaleY(d.dtp); else return 0;})
+                            .attr("y2", function(d){if (d.Measles) return scaleY(d.Measles); else return 0;})
+                            .attr("fill", "#758bfd")
+                            .attr("stroke", "#758bfd");
+
 
         //axis lines
         svg1.append("g")
-            .call(xAxis)
             .attr("class", "axis x-axis")
-            .attr("transform", `translate(0, ${s_height})`).style("font-size", "14px");
+            .attr("transform", `translate(0, ${s_height})`).style("font-size", "14px")
+            .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("transform", "rotate(-65)");
+
 
         svg1.append("g")
             .call(yAxis)
