@@ -94,3 +94,23 @@ a:hover {
 .y-a-c, .desc-text {
     max-width: 400px;
 }
+.y-c-v-c {
+    label {
+        font-size: large;
+        font-weight: bold;
+    }
+    select {
+        border-radius: 7px;
+        border: 1px solid black;
+        padding: 8px;
+        width: 100%;
+        background-color: #F5F5F5;
+    }
+    select:active, select:hover {
+        background-color: black;
+        color: mintcream;
+    }
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+}
