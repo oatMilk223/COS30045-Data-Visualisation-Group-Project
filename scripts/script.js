@@ -1,7 +1,7 @@
 function init() {
     const s_width = 700;
     const s_height = 500;
-    const svgPadding = 80;
+    const svgPadding = 100;
 
     //PUT SVGS HERE
     const svg1 = d3.select("#child-vac-rates-svg")
@@ -107,10 +107,10 @@ function init() {
 
     function generateSvgDataChld(data) {
         //updated x and y for dynamic scaling:
-        const scaleX = d3.scalePoint() 
+        var scaleX = d3.scalePoint() 
             .domain(data.map(function(d){return d.Category;}))
             .range([svgPadding+10, s_width]);
-        const scaleY = d3.scaleLinear()
+        var scaleY = d3.scaleLinear()
             .domain([0, 110])
             .range([s_height, 0]);
 
@@ -120,6 +120,7 @@ function init() {
 
         //Horizontal ine for when a bar is hovered over
         const hoverLine1 = svg1.append("line")
+            .attr("id", "CVhighlight1")
             .attr("class", "highlight")
             .attr("x1", 0)
             .attr("x2", s_width)
@@ -128,6 +129,7 @@ function init() {
             .style("opacity", 0);
 
         const hoverLine2 = svg1.append("line")
+            .attr("id", "CVhighlight2")
             .attr("class", "highlight")
             .attr("x1", 0)
             .attr("x2", s_width)
@@ -136,8 +138,9 @@ function init() {
             .style("opacity", 0);
 
             //lines connecting country data points
-        let vertline1 = svg1.selectAll("vertline1").data(data).enter()
+        const vertline1 = svg1.selectAll(".vertline").data(data).enter()
                         .append("line")
+                        .attr("class", "vertline")
                         .attr("visibility", function(d){if (d.Measles&&d.dtp) return "visibile"; else return "hidden";})
                         .attr("x1", function(d){return scaleX(d.Category);})
                         .attr("x2", function(d){return scaleX(d.Category);})
@@ -146,9 +149,21 @@ function init() {
                         .attr("fill", "#758bfd")
                         .attr("stroke", "#758bfd");
 
+        const vertline2 = svg1.append("line")
+                        .attr("id", "vertline2")
+                        .attr("x1", 0)
+                        .attr("x2", 0)
+                        .attr("y1", s_height)
+                        .attr("y2", 0)
+                        .attr("fill", "#758bfd")
+                        .attr("stroke", "#758bfd")
+                        .attr("stroke-width", 5)
+                        .style("opacity", 0);
+
         //vacc-rate-svg dtp dots
         let circ1 = svg1.selectAll("dtp").data(data).enter()
             .append("svg:image")
+            .attr("class", "dtp")
             .attr("visibility", function(d){if (d.dtp) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
             .attr("xlink:href", '../assign3/assets/figma-svgs/diptheria.svg')
             .attr("width", 10)
@@ -158,6 +173,7 @@ function init() {
             //mouseover effects for line
             .on("mouseover", function(event, d) {
                 var cirY = scaleY(event.dtp);
+                var cirX = scaleX(event.Category);
                 var opacity = 0;
                 if (event.dtp)
                     opacity = 0.5;
@@ -169,7 +185,6 @@ function init() {
                     .attr("x2", s_width + svgPadding)
                     .attr("y1", cirY)
                     .attr("y2", cirY)
-                    .attr("id", "line-bar")
                     .style("opacity", opacity);
                 cirY = scaleY(event.Measles);
                 if (event.Measles)
@@ -181,17 +196,28 @@ function init() {
                     .attr("x2", s_width + svgPadding)
                     .attr("y1", cirY)
                     .attr("y2", cirY)
-                    .attr("id", "line-bar")
                     .style("opacity", opacity);
+
+                if (event.dtp&&event.Measles){if (event.dtp<event.Measles)cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);} 
+                else {if (event.dtp) cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);}
+
+                vertline2
+                    .attr("x1", cirX)
+                    .attr("x2", cirX)
+                    .attr("y1", cirY)
+                    .attr("y2", s_height)
+                    .style("opacity", 0.5);
             })
             .on("mouseout", function (event, d) {
-                hoverLine1.style("opacity", 0)
+                hoverLine1.style("opacity", 0);
                 hoverLine2.style("opacity", 0);
+                vertline2.style("opacity", 0);
             });
         
             //vacc-rate-measles-dots
         let circ2 = svg1.selectAll("measles").data(data).enter()
             .append("svg:image")
+            .attr("class", "measles")
             .attr("visibility", function(d){if (d.Measles) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
             .attr("xlink:href", '../assign3/assets/figma-svgs/measles.svg')
             .attr("width", 10)
@@ -201,6 +227,7 @@ function init() {
             //mouseover effects for line
             .on("mouseover", function(event, d) {
                 var cirY = scaleY(event.dtp);
+                var cirX = scaleX(event.Category);
                 var opacity = 0;
                 if (event.dtp)
                     opacity = 0.5;
@@ -212,7 +239,6 @@ function init() {
                     .attr("x2", s_width + svgPadding)
                     .attr("y1", cirY)
                     .attr("y2", cirY)
-                    .attr("id", "line-bar")
                     .style("opacity", opacity);
                 cirY = scaleY(event.Measles);
                 if (event.Measles)
@@ -224,19 +250,29 @@ function init() {
                     .attr("x2", s_width + svgPadding)
                     .attr("y1", cirY)
                     .attr("y2", cirY)
-                    .attr("id", "line-bar")
                     .style("opacity", opacity);
+                    
+                if (event.dtp&&event.Measles){if (event.dtp<event.Measles)cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);} 
+                else {if (event.dtp) cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);}
+
+                vertline2
+                    .attr("x1", cirX)
+                    .attr("x2", cirX)
+                    .attr("y1", cirY)
+                    .attr("y2", s_height)
+                    .style("opacity", 0.5);
             })
             .on("mouseout", function (event, d) {
                 hoverLine1.style("opacity", 0);
                 hoverLine2.style("opacity", 0);
+                vertline2.style("opacity", 0);
             });
 
 
         //axis lines
         svg1.append("g")
-            .attr("class", "axis x-axis")
-            .attr("transform", `translate(0, ${s_height})`).style("font-size", "14px")
+            .attr("class", "cv-x-axis")
+            .attr("transform", `translate(-10, ${s_height+2})`).style("font-size", "14px")
             .call(xAxis)
                 .selectAll("text")
                 .style("text-anchor", "end")
@@ -259,10 +295,217 @@ function init() {
 
     function generateSvgDataChld2(data){
         //svg update after filtering
-        console.log("--------------------")
-        for (let i=0; i<data.length; i++){
-            console.log(data[i].Category);
-        }
+
+        let hoverLine1 = svg1.select("#CVhighlight1")
+            .attr("x1", 0)
+            .attr("x2", s_width)
+            .attr("y1", s_height)
+            .attr("y2", s_height)
+            .style("opacity", 0);
+
+        let hoverLine2 = svg1.select("#CVhighlight2")
+            .attr("x1", 0)
+            .attr("x2", s_width)
+            .attr("y1", s_height)
+            .attr("y2", s_height)
+            .style("opacity", 0);
+
+        let vertline2 = svg1.select("#vertline2")
+            .attr("x1", 0)
+            .attr("x2", 0)
+            .attr("y1", s_height)
+            .attr("y2", 0)
+            .style("opacity", 0);
+
+        var scaleX = d3.scalePoint() 
+            .domain(data.map(function(d){return d.Category;}))
+            .range([svgPadding+10, s_width]);
+        var scaleY = d3.scaleLinear()
+            .domain([0, 110])
+            .range([s_height, 0]);
+
+        var lines = svg1.selectAll(".vertline")
+            .data(data)
+            .attr("visibility", function(d){if (d.Measles&&d.dtp) return "visible"; else return "hidden";});
+        lines.exit()
+            .transition()
+            .duration(500)
+            .ease(d3.easeCircleOut)
+            .attr("y1", s_height)
+            .attr("y2", s_height)
+            .remove()
+        lines.enter()
+            .append("line")
+            .attr("class", "vertline")
+            .attr("visibility", function(d){if (d.Measles&&d.dtp) return "visibile"; else return "hidden";})
+            .attr("x1", function(d){return scaleX(d.Category);})
+            .attr("x2", function(d){return scaleX(d.Category);})
+            .attr("y1", s_height)
+            .attr("y2", s_height)
+            .attr("fill", "#758bfd")
+            .attr("stroke", "#758bfd")
+            .merge(lines)
+            .transition()
+            .duration(500)
+            .ease(d3.easeCircleOut)
+            .attr("y1", function(d){if (d.dtp) return scaleY(d.dtp); else return 0;})
+            .attr("y2", function(d){if (d.Measles) return scaleY(d.Measles); else return 0;})
+            .attr("x1", function(d){return scaleX(d.Category);})
+            .attr("x2", function(d){return scaleX(d.Category);});
+
+        var dtp = svg1.selectAll(".dtp")
+                        .data(data)
+                        .attr("visibility", function(d){if (d.dtp) return "visible"; else return "hidden";});
+        dtp.exit() //removing element
+            .transition() //transition new and old data
+            .duration(500) 
+            .ease(d3.easeCircleOut)
+            .attr("y", s_height)
+            .remove()
+
+        dtp.enter()
+            .append("svg:image")
+            .attr("class", "dtp")
+            .attr("visibility", function(d){if (d.dtp) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
+            .attr("xlink:href", '../assign3/assets/figma-svgs/diptheria.svg')
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("x", function(d){return scaleX(d.Category)-5;})
+            .attr("y", s_height)
+            .merge(dtp)
+            .transition()
+            .duration(500)
+            .ease(d3.easeCircleOut)
+            .attr("y", function(d){return scaleY(d.dtp)-5;})
+            .attr("x", function(d){return scaleX(d.Category)-5;});
+
+        dtp = svg1.selectAll(".dtp");
+
+        dtp.on("mouseover", function(event, d) {
+            var cirY = scaleY(event.dtp);
+            var cirX = scaleX(event.Category);
+            var opacity = 0;
+            if (event.dtp)
+                opacity = 0.5;
+            else
+                opacity = 0;
+            //specify dimensions of horizontal line and make visible
+            hoverLine1
+                .attr("x1", svgPadding) // Start position moved left
+                .attr("x2", s_width + svgPadding)
+                .attr("y1", cirY)
+                .attr("y2", cirY)
+                .style("opacity", opacity);
+            cirY = scaleY(event.Measles);
+            if (event.Measles)
+                opacity = 0.5;
+            else
+                opacity = 0;
+            hoverLine2
+                .attr("x1", svgPadding) // Start position moved left
+                .attr("x2", s_width + svgPadding)
+                .attr("y1", cirY)
+                .attr("y2", cirY)
+                .style("opacity", opacity);
+
+            if (event.dtp&&event.Measles){if (event.dtp<event.Measles)cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);} 
+            else {if (event.dtp) cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);}
+
+            vertline2
+                .attr("x1", cirX)
+                .attr("x2", cirX)
+                .attr("y1", cirY)
+                .attr("y2", s_height)
+                .style("opacity", 0.5);
+            })
+            .on("mouseout", function (event, d) {
+                hoverLine1.style("opacity", 0);
+                hoverLine2.style("opacity", 0);
+                vertline2.style("opacity", 0);
+            });
+
+        var measles = svg1.selectAll(".measles")
+                        .data(data)
+                        .attr("visibility", function(d){if (d.Measles) return "visible"; else return "hidden";});
+                        
+        measles.exit() //removing element
+            .transition() //transition new and old data
+            .duration(500) 
+            .ease(d3.easeCircleOut)
+            .attr("y", s_height)
+            .remove();
+
+        measles.enter()
+            .append("svg:image")
+            .attr("class", "measles")
+            .attr("visibility", function(d){if (d.Measles) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
+            .attr("xlink:href", '../assign3/assets/figma-svgs/measles.svg')
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("x", function(d){return scaleX(d.Category)-5;})
+            .attr("y", s_height)
+            .merge(measles)
+            .transition()
+            .duration(500)
+            .ease(d3.easeCircleOut)
+            .attr("y", function(d){if (d.Measles) return scaleY(d.Measles)-5; else return s_height;})
+            .attr("x", function(d){return scaleX(d.Category)-5;});
+
+        measles = svg1.selectAll(".measles");
+
+        measles.on("mouseover", function(event, d) {
+            var cirY = scaleY(event.dtp);
+            var cirX = scaleX(event.Category);
+            var opacity = 0;
+            if (event.dtp)
+                opacity = 0.5;
+            else
+                opacity = 0;
+            //specify dimensions of horizontal line and make visible
+            hoverLine1
+                .attr("x1", svgPadding) // Start position moved left
+                .attr("x2", s_width + svgPadding)
+                .attr("y1", cirY)
+                .attr("y2", cirY)
+                .style("opacity", opacity);
+            cirY = scaleY(event.Measles);
+            if (event.Measles)
+                opacity = 0.5;
+            else
+                opacity = 0;
+            hoverLine2
+                .attr("x1", svgPadding) // Start position moved left
+                .attr("x2", s_width + svgPadding)
+                .attr("y1", cirY)
+                .attr("y2", cirY)
+                .style("opacity", opacity);
+
+            if (event.dtp&&event.Measles){if (event.dtp<event.Measles)cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);} 
+            else {if (event.dtp) cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);}
+
+            vertline2
+                .attr("x1", cirX)
+                .attr("x2", cirX)
+                .attr("y1", cirY)
+                .attr("y2", s_height)
+                .style("opacity", 0.5);
+            })
+            .on("mouseout", function (event, d) {
+                hoverLine1.style("opacity", 0);
+                hoverLine2.style("opacity", 0);
+                vertline2.style("opacity", 0);
+            });
+
+        
+        var gx = svg1.select(".cv-x-axis")
+        gx.transition()
+            .duration(500)
+            .ease(d3.easeCircleOut)
+            .call(d3.axisBottom(scaleX).tickSize(0))
+            .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("transform", "rotate(-65)");
+
     }
 
 
