@@ -48,23 +48,35 @@
         </div>
         <div id="c-v-c-right">
             <p style="font-weight: bolder; padding-bottom: 20px">Filter by:</p>
-            <button>All</button>
-            <button>Measles</button>
-            <button>Diphtheria</button>
-
-            <label for="c-v-c-year">Year:</label>
-            <select name="year" id="c-v-c-year">
-                <!-- placeholder-->
-                <option value="2001">2001</option>
-                <option value="2002">2002</option>
-            </select>
-
-            <label for="c-v-c-countries">Countries Selected:</label>
-            <select name="countries" id="c-v-c-countries">
-                <!-- placeholder -- need to get all and allow multiple -->
-                <option value="Australia">Australia</option>
-                <option value="Belgium">Belgium</option>
-            </select>
+            <div class="y-c-v-c">   
+                <div>
+                    <label for="c-v-c-year">Year:</label>
+                    <select name="year" id="c-v-c-year">
+                        <option value="" disabled selected>Select a year</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="c-v-c-countries">Countries Selected:</label>
+                    <select name="countries" id="c-v-c-countries" multiple>
+                        <!-- placeholder -- need to get all and allow multiple -->
+                    </select>
+                </div>
+            </div>
             <p style="font-weight: bolder; padding-bottom: 20px">Description:</p>
             <!-- ideally not hardcoded -->
             <p class="desc-text">All OECD countries have established vaccination programmes based on their interpretation of the risks and benefits of each vaccine.</p>
@@ -87,6 +99,7 @@
                     <label for="a-c-year">Year:</label>
                     <br/>
                     <select name="year" id="a-c-year">
+                        <option value="" disabled selected>Select a year</option>
                         <option value="2023">2023</option>
                         <option value="2022">2022</option>
                         <option value="2021">2021</option>
@@ -109,8 +122,6 @@
                     <br/>
                     <select name="countries" id="a-c-countries" multiple>
                         <!-- placeholder -- need to get all and allow multiple -->
-                        <option value="Australia">Australia</option>
-                        <option value="Belgium">Belgium</option>
                     </select>
                 </div>
             </div>
