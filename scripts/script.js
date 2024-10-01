@@ -107,9 +107,9 @@ function init() {
 
     function generateSvgDataChld(data) {
         //updated x and y for dynamic scaling:
-        const scaleX = d3.scaleBand() 
+        const scaleX = d3.scalePoint() 
             .domain(data.map(function(d){return d.Category;}))
-            .range([svgPadding, s_width])
+            .range([svgPadding+10, s_width]);
         const scaleY = d3.scaleLinear()
             .domain([0, 110])
             .range([s_height, 0]);
@@ -135,18 +135,26 @@ function init() {
             .attr("y2", s_height)
             .style("opacity", 0);
 
+            //lines connecting country data points
+        let vertline1 = svg1.selectAll("vertline1").data(data).enter()
+                        .append("line")
+                        .attr("visibility", function(d){if (d.Measles&&d.dtp) return "visibile"; else return "hidden";})
+                        .attr("x1", function(d){return scaleX(d.Category);})
+                        .attr("x2", function(d){return scaleX(d.Category);})
+                        .attr("y1", function(d){if (d.dtp) return scaleY(d.dtp); else return 0;})
+                        .attr("y2", function(d){if (d.Measles) return scaleY(d.Measles); else return 0;})
+                        .attr("fill", "#758bfd")
+                        .attr("stroke", "#758bfd");
 
         //vacc-rate-svg dtp dots
-        let circ1 = svg1.selectAll("circ1").data(data).enter()
-            .append("circle")
+        let circ1 = svg1.selectAll("dtp").data(data).enter()
+            .append("svg:image")
             .attr("visibility", function(d){if (d.dtp) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
-            .attr("class", "circ-c")
-            .attr("stroke", "black")
-            .attr("stroke-width", "2px")
-            .attr("fill", "#9e9ac8")
-            .attr("cx", function(d){return scaleX(d.Category);})
-            .attr("cy", function(d){return scaleY(d.dtp);})
-            .attr("r", 3)
+            .attr("xlink:href", '../assign3/assets/figma-svgs/diptheria.svg')
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("x", function(d){return scaleX(d.Category)-5;})
+            .attr("y", function(d){return scaleY(d.dtp)-5;})
             //mouseover effects for line
             .on("mouseover", function(event, d) {
                 var cirY = scaleY(event.dtp);
@@ -182,16 +190,14 @@ function init() {
             });
         
             //vacc-rate-measles-dots
-        let circ2 = svg1.selectAll("circ2").data(data).enter()
-            .append("circle")
+        let circ2 = svg1.selectAll("measles").data(data).enter()
+            .append("svg:image")
             .attr("visibility", function(d){if (d.Measles) return "visible"; else return "hidden";}) //hide dot if value doesn't exist
-            .attr("class", "circ-c")
-            .attr("stroke", "black")
-            .attr("stroke-width", "2px")
-            .attr("fill", "#e61017")
-            .attr("cx", function(d, i){return scaleX(d.Category);})
-            .attr("cy", function(d){return scaleY(d.Measles);})
-            .attr("r", 3)
+            .attr("xlink:href", '../assign3/assets/figma-svgs/measles.svg')
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("x", function(d){return scaleX(d.Category)-5;})
+            .attr("y", function(d){return scaleY(d.Measles)-5;})
             //mouseover effects for line
             .on("mouseover", function(event, d) {
                 var cirY = scaleY(event.dtp);
@@ -226,16 +232,6 @@ function init() {
                 hoverLine2.style("opacity", 0);
             });
 
-        let vertline = svg1.selectAll("vertline").data(data).enter()
-                            .append("line")
-                            .attr("visibility", function(d){if (d.Measles&&d.dtp) return "visibile"; else return "hidden";})
-                            .attr("x1", function(d,i){return scaleX(d.Category);})
-                            .attr("x2", function(d,i){return scaleX(d.Category);})
-                            .attr("y1", function(d){if (d.dtp) return scaleY(d.dtp); else return 0;})
-                            .attr("y2", function(d){if (d.Measles) return scaleY(d.Measles); else return 0;})
-                            .attr("fill", "#758bfd")
-                            .attr("stroke", "#758bfd");
-
 
         //axis lines
         svg1.append("g")
@@ -251,6 +247,14 @@ function init() {
             .call(yAxis)
             .attr("class", "axis y-axis")
             .attr("transform", `translate(${svgPadding},  0)`).style("font-size", "14px");
+
+        svg1.append("line")
+            .attr("x1", svgPadding)
+            .attr("x2", s_width)
+            .attr("y1", s_height)
+            .attr("y2", s_height)
+            .attr("stroke", "#000000")
+            .attr("stroke-width", 7.5);
     }
 
 
