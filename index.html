@@ -15,22 +15,11 @@
     <link rel="stylesheet" href="./styles/styles.css">
 </head>
 <body>
-<!--Todo:
-    - basic page contents
-        - footer
-        - header
-    - visualisation one -- children vaccination rates
-    - styling of both visualisations - can we use sass?
-    - select components for data -- year select and others
-    - google font import - done
-    - datasets import 1 and 2
--->
 <div id="page">
     <nav>
         <h1>OECD Health Statistics</h1>
-        <p>OECD Health Data for Alcohol Consumption and Children Vaccination Rates</p>
+        <b>OECD Health Data for Alcohol Consumption and Child Vaccination Rates</b>
 
-<!--    todo: skew to left    -->
         <p>By Brooke Johnson (102968951) and Jacob Coulter (105408256)</p>
     </nav>
 
@@ -66,7 +55,6 @@
                 <option value="Belgium">Belgium</option>
             </select>
             <p style="font-weight: bolder; padding-bottom: 20px">Description:</p>
-            <!-- ideally not hardcoded -->
             <p class="desc-text">All OECD countries have established vaccination programmes based on their interpretation of the risks and benefits of each vaccine.</p>
             <br/>
             <a href="https://www.oecd.org/en/data/indicators/child-vaccination-rates.html" target="_blank">Link to Original Indicator ></a>
@@ -87,8 +75,7 @@
                     <label for="a-c-year">Year:</label>
                     <br/>
                     <select name="year" id="a-c-year">
-                        <option value="" disabled selected>Select a year</option>
-                        <option value="2023">2023</option>
+                        <option value="2023" selected>2023</option>
                         <option value="2022">2022</option>
                         <option value="2021">2021</option>
                         <option value="2020">2020</option>
@@ -108,8 +95,10 @@
                 <div>
                     <label for="a-c-countries">Countries Selected:</label>
                     <br/>
-                    <select name="countries" id="a-c-countries" multiple>
-                        <!-- placeholder -- need to get all and allow multiple -->
+                    <select name="countries" id="a-c-countries" multiple >
+                        <option value="Ireland" selected>Ireland</option>
+                        <option value="New Zealand" selected>New Zealand</option>
+                        <option value="Costa Rica" selected>Costa Rica</option>
                     </select>
                 </div>
             </div>
@@ -118,6 +107,16 @@
             <p class="desc-text">Alcohol consumption is defined as annual sales of pure alcohol in litres per person aged 15 years and older.</p>
             <br/>
             <a href="https://www.oecd.org/en/data/indicators/alcohol-consumption.html" target="_blank">Link to Original Indicator ></a>
+            <br/>
+            <div style="padding-top: 100px">
+                <div id="a-c-h"><b>Hovered:</b> <span id="a-c-h-country"></span>, <span id="a-c-h-rate"></span> litres per capita (aged 15+)</div>
+                <ul >
+                    <li>Hold shift and click to select multiple countries.</li>
+                    <li>You can select one year at a time.</li>
+                    <li>2023 has less data than other years.</li>
+                    <li>Selecting 10+ countries will skew text.</li>
+                </ul>
+            </div>
         </div>
     </section>
     <footer>

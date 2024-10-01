@@ -2,8 +2,13 @@ function init() {
     const s_width = 700;
     const s_height = 500;
     const svgPadding = 80;
+    //for alc cons' hidden text:
+    const hiddenACPill = document.getElementById("a-c-h")
+    const hiddenACCountry = document.getElementById("a-c-h-country")
+    const hiddenACRate = document.getElementById("a-c-h-rate")
+    hiddenACPill.style.opacity = 0;
 
-    //PUT SVGS HERE
+    //SVGS
     const svg1 = d3.select("#child-vac-rates-svg")
         .attr("height", s_height + svgPadding)
         .attr("width", s_width + svgPadding)
@@ -13,21 +18,33 @@ function init() {
         .attr("width", s_width + svgPadding)
 
 
-    function generateSvgDataAlc(data) {
-        //updated x and y for dynamic scaling:
-        const scaleX = d3.scaleBand()
+    function getScaleX (data) {
+        return d3.scaleBand()
             .domain(data.map(d => d.country))
             .range([0, s_width])
             .paddingInner(0.40);
-        const scaleY = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.rate)])
+    }
+    function getScaleY(data) {
+        const maxValue = d3.max(data, d => d.rate);
+        return d3.scaleLinear()
+            .domain([0, maxValue * 1.1]) // Add 10% padding above the maximum value
             .range([s_height, 0]);
+    }
 
-        //Add ticks and adjust sizing
+    function generateSvgDataAlc(data) {
+        // Update the scales and their domains with the data
+        const scaleX = getScaleX(data)
+        const scaleY = getScaleY(data)
+
+        //Remove any existing axis if data changed
+        svg2.selectAll('.x-axis').remove();
+        svg2.selectAll('.y-axis').remove();
+
+        //X and Y axis
         const xAxis = d3.axisBottom(scaleX).tickSize(15);
-        const yAxis = d3.axisLeft(scaleY).ticks(10).tickSize(15);
+        const yAxis = d3.axisLeft(scaleY).tickSize(15);
 
-        //Horizontal ine for when a bar is hovered over
+        //Hover line for bar
         const hoverLine = svg2.append("line")
             .attr("class", "highlight")
             .attr("x1", 0)
@@ -36,18 +53,21 @@ function init() {
             .attr("y2", s_height)
             .style("opacity", 0);
 
-        //for adding border around x-axis text in mouseover
+        //Group for X axis text - in mouseover
         const borderGroup = svg2.append('g')
             .attr('class', 'border-group');
 
+        //Bar code
+        const bars = svg2.selectAll("rect")
+            .data(data)
 
-        //alc-con-svg bars
-        let rects = svg2.selectAll("rect").data(data).enter()
+        bars.enter()
             .append("rect")
+            .merge(bars)
             .attr("class", "rect-a")
             .attr("stroke", "black")
             .attr("stroke-width", "2px")
-            .attr("fill", "#9e9ac8")
+            .attr("fill", "black")
             .attr("x", d => scaleX(d.country) + svgPadding)
             .attr("width", scaleX.bandwidth())
             //mouseover effects for line and text border
@@ -74,33 +94,54 @@ function init() {
                     .attr('height', 20)
                     .attr('stroke', 'black')
                     .attr('stroke-width', 3);
+                //hide borders if text is skewed:
+                if (data.length > 9) {
+                    borderGroup.select('.border')
+                        .attr('opacity', '0')
+                }
+                hiddenACPill.style.opacity = 1;
+                hiddenACCountry.innerText = event.country;
+                hiddenACRate.innerText = event.rate;
+
             })
             .on("mouseout", function (event, d) {
                 hoverLine.style("opacity", 0);
                 borderGroup.selectAll('.border').remove();
+                hiddenACPill.style.opacity = 0;
             })
             //transition
             .attr("y", s_height)
             .attr("height", 0)
             .transition()
             .duration(1000)
+            .attr("fill", "#9e9ac8")
             .ease(d3.easeCircleOut)
             .attr("y", d => scaleY(d.rate))
             .attr("height", d => s_height - scaleY(d.rate))
 
-        //axis lines
-        svg2.append("g")
+        //Remove old bars
+        bars.exit().remove()
+
+        //X and Y Axis called
+        const gx = svg2.append("g")
             .call(xAxis)
             .attr("class", "axis x-axis")
-            .attr("transform", `translate(${svgPadding}, ${s_height})`).style("font-size", "14px");
+            .attr("transform", `translate(${svgPadding}, ${s_height})`).style("font-size", "14px")
+            if(data.length > 9) {
+                gx
+                    .selectAll("text")
+                    .style("text-anchor", "end")
+                    .transition()
+                    .duration(1000)
+                    .ease(d3.easeCircleOut)
+                    .attr("transform", "translate(-10,0)rotate(-45)")
+                    .style("text-anchor", "end");
+            }
 
-        svg2.append("g")
+        const gy = svg2.append("g")
             .call(yAxis)
             .attr("class", "axis y-axis")
             .attr("transform", `translate(${svgPadding},  0)`).style("font-size", "14px");
-    }
-    function generateSvgDataAlc2(data) {
-        //will update alc svg here
 
     }
 
@@ -288,7 +329,7 @@ function init() {
                 //get selected country values
                 const selectedCountries = getSelectedCountries("a-c-countries");
                 filterData(selectedCountries, yearSelected).then((data) => {
-                    generateSvgDataAlc2(data)
+                    generateSvgDataAlc(data)
                 })
             })
         }
@@ -300,7 +341,6 @@ function init() {
         // Apply year filter then further filter data for selected countries:
         //todo: replace when in mercury
         //    d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
-        // let sdata = [];
         return d3.csv(`../DV_CSVs/Alcohol Consumption/AC_${year}.csv`).then(data => {
             // Apply country filters: only keep data that has the selected countries
             return data.filter(dp => [...countries].includes(dp.country)); // Return the filtered data
@@ -345,14 +385,14 @@ function init() {
             //get selected year - will always be one value
             const selectedYear = document.getElementById("a-c-year").value
             filterData(selectedCountries, selectedYear).then((data) => {
-                generateSvgDataAlc2(data)
+                generateSvgDataAlc(data)
             })
         }
     });
 
 
 
-    //default value used here
+    //default value used here - todo: change paths
     //    d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
     d3.csv(`../DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
         generateSvgDataAlc(data)
