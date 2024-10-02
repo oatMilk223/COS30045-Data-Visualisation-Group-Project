@@ -1,4 +1,4 @@
-h1, h2, h3, h4, h5, h6, p, a, label, option {
+h1, h2, h3, h4, h5, h6, p, a, label, option, li, b, span, div, button {
     /*google font import with alternative*/
     font-family: "Inter", sans-serif;
 }
@@ -22,11 +22,6 @@ section {
     }
 }
 .rect-a:hover {
-    fill: #df65b0;
-    stroke: black;
-    stroke-width: 3px;
-}
-.circ-c:hover {
     fill: #df65b0;
     stroke: black;
     stroke-width: 3px;
@@ -83,10 +78,6 @@ a:hover {
         width: 100%;
         background-color: #F5F5F5;
     }
-    select:active, select:hover {
-        background-color: black;
-        color: mintcream;
-    }
     display: flex;
     justify-content: space-between;
     height: 100px;
@@ -106,11 +97,99 @@ a:hover {
         width: 100%;
         background-color: #F5F5F5;
     }
-    select:active, select:hover {
-        background-color: black;
-        color: mintcream;
-    }
     display: flex;
     justify-content: space-between;
     height: 100px;
+}
+.y-c-v-c, .desc-text {
+    max-width: 400px;
+}
+#a-c-countries option:checked {
+    background-color: black; /* May not work in all browsers */
+    color: white; /* Optional: change text color for visibility */
+}
+#a-c-countries option {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 2px;
+}
+#a-c-h {
+    background-color: black;
+    color: #df65b0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    width: fit-content;
+}
+#a-c-left, #c-v-c-left{
+    h2, p {
+        padding-left: 90px;
+    }
+}
+#alc-cons-svg {
+    width: fit-content;
+    height: fit-content;
+}
+
+
+#c-v-c-countries option:checked {
+    background-color: black; /* May not work in all browsers */
+    color: white; /* Optional: change text color for visibility */
+}
+#c-v-c-countries option {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 2px;
+}
+#c-v-c-h {
+    background-color: black;
+    color: #df65b0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    width: fit-content;
+}
+#c-v-c-left, #c-v-c-left{
+    h2, p {
+        padding-left: 90px;
+    }
+}
+#child-vac-rates-svg {
+    width: fit-content;
+    height: fit-content;
+}
+
+nav {
+    padding: 30px;
+    border-bottom: 5px solid black;
+    p {
+        color: aliceblue;
+        float: right;
+    }
+    b {
+        border-bottom: 5px solid black;
+    }
+    h1 {
+        background-color: whitesmoke;
+        border-radius: 20px;
+        border: 1px solid black;
+        width: fit-content;
+        padding: 10px;
+    }
+}
+/*footer styling*/
+footer {
+    padding: 10px;
+    height: 100px;
+    background-color: #754F5B;
+    border-top: 5px solid black;
+    ul {
+        background-color: black;
+        width: fit-content;
+        color: white;
+        padding: 10px;
+        margin-left: 20px;
+        border-radius: 10px;
+        list-style-type: none;
+    }
 }
