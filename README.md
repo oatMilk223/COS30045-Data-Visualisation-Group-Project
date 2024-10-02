@@ -10,3 +10,7 @@ This is using OECD Health Data
 ## Notes:
 - All data is derived from OECD Health Statistics.
 - Each visualisation can only be filtered by a single year at a time.
+## Links:
+(The below links may require requesting access)
+- Confluence: https://data-visualisations.atlassian.net/wiki/spaces/DVP/pages/294935/Onboarding+Project
+- Jira: https://data-visualisations.atlassian.net/jira/software/projects/DV/boards/1
