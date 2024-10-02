@@ -756,9 +756,6 @@ function init() {
 
     //    d3.csv(`../assign3/DV_CSVs/Child Vaccination/CV_2022.csv`).then(data => {
     d3.csv('../assign3/DV_CSVs/Child Vaccination/CV_2023.csv').then(function(data){
-        let countries = data.map(function(d){return d.Category});
-        let countryOptions = [...countries];
-        changeAvailVaccCountryOptions(countryOptions);
         generateSvgDataChld(data)
     })
 
