@@ -26,11 +26,6 @@ section {
     stroke: black;
     stroke-width: 3px;
 }
-.circ-c:hover {
-    fill: #df65b0;
-    stroke: black;
-    stroke-width: 3px;
-}
 .axis line, .axis path {
     stroke: black;
     stroke-width: 6;
@@ -91,6 +86,26 @@ a:hover {
     max-width: 400px;
 }
 
+.y-c-v-c {
+    label {
+        font-size: large;
+        font-weight: bold;
+    }
+    select {
+        border-radius: 7px;
+        border: 1px solid black;
+        padding: 8px;
+        width: 100%;
+        background-color: #F5F5F5;
+    }
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+}
+.y-c-v-c, .desc-text {
+    max-width: 400px;
+}
+
 #a-c-countries option:checked {
     background-color: black; /* May not work in all browsers */
     color: white; /* Optional: change text color for visibility */
@@ -117,6 +132,36 @@ a:hover {
     width: fit-content;
     height: fit-content;
 }
+
+
+
+#c-v-c-countries option:checked {
+    background-color: black; /* May not work in all browsers */
+    color: white; /* Optional: change text color for visibility */
+}
+#c-v-c-countries option {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 2px;
+}
+#c-v-c-h {
+    background-color: black;
+    color: #df65b0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    width: fit-content;
+}
+#c-v-c-left, #c-v-c-left{
+    h2, p {
+        padding-left: 90px;
+    }
+}
+#child-vac-rates-svg {
+    width: fit-content;
+    height: fit-content;
+}
+
 nav {
     padding: 30px;
     border-bottom: 5px solid black;
