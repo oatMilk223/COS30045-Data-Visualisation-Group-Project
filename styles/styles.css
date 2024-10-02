@@ -1,4 +1,4 @@
-h1, h2, h3, h4, h5, h6, p, a, label, option, li, b, span, div {
+h1, h2, h3, h4, h5, h6, p, a, label, option, li, b, span, div, button {
     /*google font import with alternative*/
     font-family: "Inter", sans-serif;
 }
@@ -133,5 +133,21 @@ nav {
         border: 1px solid black;
         width: fit-content;
         padding: 10px;
+    }
+}
+/*footer styling*/
+footer {
+    padding: 10px;
+    height: 100px;
+    background-color: #754F5B;
+    border-top: 5px solid black;
+    ul {
+        background-color: black;
+        width: fit-content;
+        color: white;
+        padding: 10px;
+        margin-left: 20px;
+        border-radius: 10px;
+        list-style-type: none;
     }
 }
