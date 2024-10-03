@@ -633,8 +633,6 @@ function init() {
         //get data from csv file which matches year and country filters.
         //this could be refactored for other visualisations
         // Apply year filter then further filter data for selected countries:
-        //todo: replace when in mercury
-        //    d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
         return d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_${year}.csv`).then(data => {
             // Apply country filters: only keep data that has the selected countries
             return data.filter(dp => [...countries].includes(dp.country)); // Return the filtered data
@@ -688,9 +686,6 @@ function init() {
         //get data from csv file which matches year and country filters.
         //this could be refactored for other visualisations
         // Apply year filter then further filter data for selected countries:
-        //todo: replace when in mercury
-        //    d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
-        // let sdata = [];
         return d3.csv(`../assign3/DV_CSVs/Child Vaccination/CV_${year}.csv`).then(data => {
             // Apply country filters: only keep data that has the selected countries
             return data.filter(dp => [...countries].includes(dp.Category)); // Return the filtered data
@@ -761,13 +756,10 @@ function init() {
 
 
 
-    //default value used here - todo: change paths
-    //    d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
     d3.csv(`../assign3/DV_CSVs/Alcohol Consumption/AC_2023.csv`).then(data => {
         generateSvgDataAlc(data)
     });
 
-    //    d3.csv(`../assign3/DV_CSVs/Child Vaccination/CV_2022.csv`).then(data => {
     d3.csv('../assign3/DV_CSVs/Child Vaccination/CV_2023.csv').then(function(data){
         generateSvgDataChld(data)
     })
