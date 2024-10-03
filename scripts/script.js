@@ -202,8 +202,6 @@ function init() {
                         .attr("x2", 0)
                         .attr("y1", s_height)
                         .attr("y2", 0)
-                        .attr("fill", "#758bfd")
-                        .attr("stroke", "#758bfd")
                         .attr("stroke-width", 5)
                         .style("opacity", 0);
 
@@ -245,14 +243,18 @@ function init() {
                     .attr("y2", cirY)
                     .style("opacity", opacity);
 
-                if (event.dtp&&event.Measles){if (event.dtp<event.Measles)cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);} 
-                else {if (event.dtp) cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);}
+                var color = "#df65b0";
+                if (event.dtp&&event.Measles){if (event.dtp<event.Measles&&event.dtp<100){color = "#758bfd"; cirY = scaleY(event.dtp);} else{color = "#df65b0"; cirY = scaleY(event.Measles);}} 
+                else {if (event.dtp){color = "#758bfd"; cirY = scaleY(event.dtp);} else {color = "#df65b0"; cirY = scaleY(event.Measles);}}
+
 
                 vertline2
                     .attr("x1", cirX)
                     .attr("x2", cirX)
                     .attr("y1", cirY)
                     .attr("y2", s_height)
+                    .attr("fill", color)
+                    .attr("stroke", color)
                     .style("opacity", 0.5);
 
                 hiddenCVPill.style.opacity = 1;
@@ -305,14 +307,18 @@ function init() {
                     .attr("y2", cirY)
                     .style("opacity", opacity);
                     
-                if (event.dtp&&event.Measles){if (event.dtp<event.Measles)cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);} 
-                else {if (event.dtp) cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);}
+                var color = "#df65b0";
+                if (event.dtp&&event.Measles){if (event.dtp<event.Measles&&event.dtp<100){color = "#758bfd"; cirY = scaleY(event.dtp);} else{color = "#df65b0"; cirY = scaleY(event.Measles);}} 
+                else {if (event.dtp){color = "#758bfd"; cirY = scaleY(event.dtp);} else {color = "#df65b0"; cirY = scaleY(event.Measles);}}
+
 
                 vertline2
                     .attr("x1", cirX)
                     .attr("x2", cirX)
                     .attr("y1", cirY)
                     .attr("y2", s_height)
+                    .attr("fill", color)
+                    .attr("stroke", color)
                     .style("opacity", 0.5);
                 
                 hiddenCVPill.style.opacity = 1;
@@ -467,14 +473,18 @@ function init() {
                 .attr("y2", cirY)
                 .style("opacity", opacity);
 
-            if (event.dtp&&event.Measles){if (event.dtp<event.Measles)cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);} 
-            else {if (event.dtp) cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);}
+            var color = "#df65b0";
+            if (event.dtp&&event.Measles){if (event.dtp<event.Measles&&event.dtp<100){color = "#758bfd"; cirY = scaleY(event.dtp);} else{color = "#df65b0"; cirY = scaleY(event.Measles);}} 
+            else {if (event.dtp){color = "#758bfd"; cirY = scaleY(event.dtp);} else {color = "#df65b0"; cirY = scaleY(event.Measles);}}
+
 
             vertline2
                 .attr("x1", cirX)
                 .attr("x2", cirX)
                 .attr("y1", cirY)
                 .attr("y2", s_height)
+                .attr("fill", color)
+                .attr("stroke", color)
                 .style("opacity", 0.5);
 
             hiddenCVPill.style.opacity = 1;
@@ -545,15 +555,18 @@ function init() {
                 .attr("y2", cirY)
                 .style("opacity", opacity);
 
-            if (event.dtp&&event.Measles){if (event.dtp<event.Measles)cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);} 
-            else {if (event.dtp) cirY = scaleY(event.dtp); else cirY = scaleY(event.Measles);}
+            var color = "#df65b0";
+            if (event.dtp&&event.Measles){if (event.dtp<event.Measles&&event.dtp<100){color = "#758bfd"; cirY = scaleY(event.dtp);} else{color = "#df65b0"; cirY = scaleY(event.Measles);}} 
+            else {if (event.dtp){color = "#758bfd"; cirY = scaleY(event.dtp);} else {color = "#df65b0"; cirY = scaleY(event.Measles);}}
 
             vertline2
                 .attr("x1", cirX)
                 .attr("x2", cirX)
                 .attr("y1", cirY)
                 .attr("y2", s_height)
-                .style("opacity", 0.5);
+                .attr("fill", color)
+                .attr("stroke", color)
+                .style("opacity", 0.5)
 
             hiddenCVPill.style.opacity = 1;
             hiddenCVCountry.innerText = event.Category;
