@@ -39,6 +39,16 @@ section {
     stroke-width: 6;
     fill: none;
 }
+#CVhighlight1 {
+    stroke: #758bfd;
+    stroke-width: 6;
+    fill: none;
+}
+#CVhighlight2 {
+    stroke: #df65b0;
+    stroke-width: 6;
+    fill: none;
+}
 .desc-text {
     border: 1px solid black;
     border-radius: 15px;
@@ -85,7 +95,6 @@ a:hover {
 .y-a-c, .desc-text {
     max-width: 400px;
 }
-
 .y-c-v-c {
     label {
         font-size: large;
@@ -105,7 +114,6 @@ a:hover {
 .y-c-v-c, .desc-text {
     max-width: 400px;
 }
-
 #a-c-countries option:checked {
     background-color: black; /* May not work in all browsers */
     color: white; /* Optional: change text color for visibility */
@@ -132,7 +140,6 @@ a:hover {
     width: fit-content;
     height: fit-content;
 }
-
 
 
 #c-v-c-countries option:checked {
